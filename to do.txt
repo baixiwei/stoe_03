@@ -1,0 +1,11 @@
+x   set spatial to superimposed and varied temporal
+x   added pattern mask condition manipulation and passed this factor down the line
+x   added framework for pattern mask display to function presenter
+
+preload images
+
+add pattern mask conditions
+create actual pattern masks
+make pattern masks appear
+explain pattern masks to user?
+change pattern mask to within-ss manipulation?

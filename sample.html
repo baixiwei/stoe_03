@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Spatial and Temporal Organization of Examples Experiment 3 Demo</title>
+    
+    <script src="utilities/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="utilities/jquery-ui.js"        type="text/javascript"></script>
+    <link href="utilities/jquery-ui.css"        type="text/css" rel="stylesheet">
+    <script src="utilities/jspsych-revised.js"  type="text/javascript"></script>
+    <script src="utilities/utility.js"          type="text/javascript"></script>
+    <script src="functionPresenter.js"          type="text/javascript"></script>
+    <script src="jspsych-survey.js"             type="text/javascript"></script>
+    <script src="jspsych-training.js"           type="text/javascript"></script>
+    <script src="content.js"                    type="text/javascript"></script>
+    <link href="styles.css"                     type="text/css" rel="stylesheet">
+    
+</head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<body>
+    <div id="instructions" style="float:left">
+        <p>Click one of the buttons below.</p>
+        <p>Unmasked Versions</p>
+        <p><button id="button_0">Binomial, Simultaneous</button></p>
+        <p><button id="button_1">Binomial, Successive</button></p>
+        <p><button id="button_2">Power Law, Simultaneous</button></p>
+        <p><button id="button_3">Power Law, Successive</button></p>
+        <p>Masked Versions</p>
+        <p><button id="button_4">Binomial, Simultaneous</button></p>
+        <p><button id="button_5">Binomial, Successive</button></p>
+        <p><button id="button_6">Power Law, Simultaneous</button></p>
+        <p><button id="button_7">Power Law, Successive</button></p>
+    </div>
+	<div id="target" style="margin-left:250px">
+        <div id="bin_sim_unm" class="function-presenter"></div>
+        <div id="bin_sim_mas" class="function-presenter"></div>
+        <div id="pow_sim_unm" class="function-presenter"></div>
+        <div id="pow_sim_mas" class="function-presenter"></div>
+        <div id="bin_suc_unm" class="function-presenter"></div>
+        <div id="bin_suc_mas" class="function-presenter"></div>
+        <div id="pow_suc_unm" class="function-presenter"></div>
+        <div id="pow_suc_mas" class="function-presenter"></div>
+	</div>
+</body>
+
+<script type="text/javascript">
+
+preload( all_images );
+
+var names = [ "bin_sim_unm", "bin_sim_mas", "pow_sim_unm", "pow_sim_mas", "bin_suc_unm", "bin_suc_mas", "pow_suc_unm", "pow_suc_mas" ];
+
+var fps = new Array(8);
+var func, temporal, spatial, mask;
+for ( var i=0; i<8; i++ ) {
+    if ( i==0 || i==1 || i==4 || i==5 ) {
+        func = "Binomial";
+    } else {
+        func = "Power Law";
+    }
+    if ( i==0 || i==2 || i==4 || i==6 ) {
+        temporal = "Superimposed"; // i.e. simultaneous
+    } else {
+        temporal = "Separated"; // i.e. successive
+    }
+    spatial = "Superimposed";
+    if ( i<4 ) {
+        mask = false;
+    } else {
+        mask = true;
+    }
+    console.log( i + ": " + func + " " + temporal + " " + spatial + " " + mask );
+    fps[i] = new functionPresenter( func, spatial, temporal, mask );
+    fps[i].drawSelf( $('#'+names[i]), 600, 925 );
+}
+$(".function-presenter").hide();
+
+function showFunctionPresenter( idx ) {
+    $(".function-presenter").hide();
+    var name = names[ idx ];
+    $("#"+name).show();
+}
+
+for ( var i=0; i<8; i++ ) {
+    $("#button_"+i).click( function() { showFunctionPresenter(Number(this.id.replace("button_",""))); } );
+}
+
+</script>
+</html>
