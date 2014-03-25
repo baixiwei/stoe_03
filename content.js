@@ -38,7 +38,6 @@ function getTutorialBlock( topic, mode ) {
 //////////////////////////////////////////
 
 function getPracticeBlock( topic, spatial, temporal, mask, mode ) {
-
     var questions;
     // binomial distribution
     if ( topic=="Binomial" ) {
@@ -216,7 +215,7 @@ function getPracticeBlock( topic, spatial, temporal, mask, mode ) {
     
     var data = [];
     for ( var i=0; i<questions.length; i++ ) {
-        data.push( { "section": "Practice", "topic": topic, "number": i, "stimID": questions[i].quesID } );
+        data.push( { "section": "Practice", "temporal": temporal, "topic": topic, "number": i, "stimID": questions[i].quesID } );
     }
 //    questions = questions.slice(0,2);
     return { "type": "training",

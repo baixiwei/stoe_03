@@ -1,11 +1,16 @@
 x   set spatial to superimposed and varied temporal
 x   added pattern mask condition manipulation and passed this factor down the line
 x   added framework for pattern mask display to function presenter
-
-preload images
-
-add pattern mask conditions
-create actual pattern masks
-make pattern masks appear
-explain pattern masks to user?
-change pattern mask to within-ss manipulation?
+x   preload images
+x   add pattern mask conditions
+x   create actual pattern masks
+x   make pattern masks appear
+x   explain pattern masks to user? (decided not)
+x   change pattern mask to within-ss manipulation? (did)
+    change pattern mask back to between-ss
+    change temporal factor to within-ss
+    add delay among practice screen presentations
+    (fade in text?)
+    explicitly record conditions of present block
+    add tutorial for use of the interface
+    create weekend sessions

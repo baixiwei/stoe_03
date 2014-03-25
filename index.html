@@ -49,7 +49,7 @@ var sandbox;    // boolean, if we're on turk, whether or not we're in the sandbo
 if ( override ) {
     offline = false;
     testing = true;
-    mode    = "auto";
+    mode    = "free";
     verbose = true;
     subjid  = "NONTURK" + Math.floor( Math.random()*1000000000 );
     turk    = false;
@@ -177,15 +177,24 @@ function assignCondition(data) {
 function conditionToFactors( condition ) {
 //    var spatial     = [ "Separated", "Superimposed" ][ condition % 2 ];
 //    var temporal    = [ "Separated", "Superimposed" ][ Math.floor( condition/2 ) ];
-    var spatial     = "Superimposed";
-    var temporal    = [ "Separated", "Superimposed" ][ condition % 2 ];
-    var mask_first  = [ true, false ][ Math.floor( condition/2 ) ];
-    return { "spatial": spatial, "temporal": temporal, "mask_first": mask_first };
+    var spatial, temporal_first, mask;
+    spatial = "Superimposed";
+    if ( condition==0 || condition==1 ) {
+        temporal_first = "Separated first";
+    } else if ( condition==2 || condition==3 ) {
+        temporal_first = "Superimposed first";
+    }
+    if ( condition==0 || condition==2 ) {
+        mask = true;
+    } else if ( condition==1 || condition==3 ) {
+        mask  = false;
+    }
+    return { "spatial": spatial, "temporal_first": temporal_first, "mask": mask };
 }
 
 // makeExpStruct
 // creates experiment structure for jspsych based on experimental factors and mode
-function makeExpStruct( spatial, temporal, mask_first, testing, mode, topics, blocks ) {
+function makeExpStruct( spatial, temporal_first, mask, testing, mode, topics, blocks ) {
 
     topics  = (topics==undefined) ? [ "Binomial", "Power Law" ] : topics;
     blocks  = (blocks==undefined) ? [ "Introduction", "Tutorial", "Practice", "Test", "Background" ] : blocks;
@@ -198,12 +207,17 @@ function makeExpStruct( spatial, temporal, mask_first, testing, mode, topics, bl
     }
     
     // training and test blocks
+    var temporal;
     for ( var i=0; i<topics.length; i++ ) {
         if ( blocks.indexOf( "Tutorial" ) != -1 ) {
             exp_struct.push( getTutorialBlock( topics[i], mode ) );
         }
         if ( blocks.indexOf( "Practice" ) != -1 ) {
-            mask = [ mask_first, !mask_first ][ i ];
+            if ( temporal_first=="Separated first" ) {
+                temporal = [ "Separated", "Superimposed" ][ i ];
+            } else if ( temporal_first=="Superimposed first" ) {
+                temporal = [ "Superimposed", "Separated" ][ i ];
+            }
             block = getPracticeBlock( topics[i], spatial, temporal, mask, mode );
             if ( testing ) {
                 block.questions = block.questions.slice(0,5);
@@ -234,13 +248,13 @@ function makeExpStruct( spatial, temporal, mask_first, testing, mode, topics, bl
 function runExperiment( condition ) {
 
     // assign experimental factors and create experiment structure
-    var spatial     = conditionToFactors(condition).spatial;
-    var temporal    = conditionToFactors(condition).temporal;
-    var mask_first  = conditionToFactors(condition).mask_first;
-    console.log( "runExperiment Factors assigned. spatial: " + spatial + "; temporal: " + temporal + "; mask_first: " + mask_first );
+    var spatial         = conditionToFactors(condition).spatial;
+    var temporal_first  = conditionToFactors(condition).temporal_first;
+    var mask            = conditionToFactors(condition).mask;
+    console.log( "runExperiment Factors assigned. spatial: " + spatial + "; temporal_first: " + temporal_first + "; mask: " + mask );
     var topics      = [ "Binomial", "Power Law" ];
     var blocks      = [ "Introduction", "Tutorial", "Practice", "Test", "Background" ];
-    var exp_struct  = makeExpStruct( spatial, temporal, mask_first, testing, mode, topics, blocks );
+    var exp_struct  = makeExpStruct( spatial, temporal_first, mask, testing, mode, topics, blocks );
     
     // record start time
     var start_time          = new Date();
@@ -259,7 +273,7 @@ function runExperiment( condition ) {
             var end_time_txt    = dateToString( end_time );
             var total_time_min  = (( end_time.getTime() - start_time.getTime() ) / ( 60 * 1000 )).toFixed(2);
             var subj_data       = { "subjid": subjid, "testing": testing.toString(), "mode": mode,
-                                    "condition": condition, "spatial": spatial, "temporal": temporal, "mask_first": Number(mask_first),
+                                    "condition": condition, "spatial": spatial, "temporal_first": temporal_first, "mask": Number(mask),
                                     "start": start_time_txt, "end": end_time_txt, "time": total_time_min };
             var final_data      = prependData( subj_data, data );
             if ( offline ) {
