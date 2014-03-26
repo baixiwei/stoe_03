@@ -47,7 +47,7 @@ var assigned;   // boolean, if we're on turk, whether or not the HIT has been as
 var sandbox;    // boolean, if we're on turk, whether or not we're in the sandbox
 
 if ( override ) {
-    offline = false;
+    offline = true;
     testing = true;
     mode    = "free";
     verbose = true;
@@ -226,7 +226,7 @@ function makeExpStruct( spatial, temporal_first, mask, testing, mode, topics, bl
             exp_struct.push( block );
         }
         if ( blocks.indexOf( "Test" ) != -1 ) {
-            block = getTestBlock( topics[i], mode );
+            block = getTestBlock( topics[i], temporal, mode );
             if ( testing ) {
                 block.specs = block.specs.slice(0,5);
                 block.data = block.data.slice(0,5);

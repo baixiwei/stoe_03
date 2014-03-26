@@ -83,13 +83,17 @@
 
             // add question and submit button
             $( "#question_text" ).html( trial.question.text );
-            $( "#submit" ).html( '<button type="button" id="submit_button">Submit</button>' );
+            if ( trial.question.key===undefined ) {
+                $( "#submit" ).html( '<button type="button" id="submit_button">Continue</button>' );
+            } else {
+                $( "#submit" ).html( '<button type="button" id="submit_button">Submit</button>' );
+            }
             
             // add handler for submit button
             var ready       = ( trial.question.key===undefined ) ? true : false ;   // whether we're ready to go to the next trial when submit is clicked
             var maxtries    = ( trial.question.force_correct ) ? 20 : 3 ;           // maximum number of incorrect submissions allowed
             var handleSubmit = function() {
-                $( '#submit_button' ).attr( 'disabled', 'disabled' );
+                $( '#submit_button' ).prop( 'disabled', true );
                 if ( ready ) {
                     // record data and proceed to next trial
                     $('#submit_button').unbind( 'click', handleSubmit );
@@ -156,16 +160,24 @@
                         if ( disable )  { presenter.disableSliders(); }
                         if ( ready )    { $('#submit_button').html( "Continue" ); }
                         setTimeout( function() {
-                            $('#submit_button').removeAttr( 'disabled' ); }, delay );
+                            $('#submit_button').prop( 'disabled', false ); }, delay );
                             if ( trial.mode=="auto" ) { setTimeout( function() { $('#submit_button').click(); }, 10 ); }
                         }, 250 );
                 }
             }
+            
+            // set submit button to use handler and disable it for a moment to discourage "clicking through" without reading
             $( "#submit_button" ).click( handleSubmit );
-            if ( trial.mode=="free" ) { $('#submit_button').focus(); }
-            if ( trial.mode=="auto" ) {
-                if ( !ready ) { presenter.setVals( trial.question.key[0], trial.question.key[1] ); }
-                setTimeout( function () { $('#submit_button').click(); }, 10 );
+            if ( trial.mode=="free" ) {
+                $( '#submit_button' ).prop( 'disabled', true );
+                setTimeout( function() { $('#submit_button').prop( 'disabled', false ).focus(); }, 100 );
+            } else if ( trial.mode=="forced" ) {
+                $( '#submit_button' ).prop( 'disabled', true );
+                setTimeout( function() { $('#submit_button').prop( 'disabled', false ); }, 1000 );
+            } else if ( trial.mode=="auto" ) {
+                setTimeout( function () { 
+                    if ( !ready ) { presenter.setVals( trial.question.key[0], trial.question.key[1] ); }
+                    $('#submit_button').click(); }, 10 );
             }
             window.scrollTo(0,0);
             

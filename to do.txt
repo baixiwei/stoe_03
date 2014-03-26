@@ -7,10 +7,16 @@ x   create actual pattern masks
 x   make pattern masks appear
 x   explain pattern masks to user? (decided not)
 x   change pattern mask to within-ss manipulation? (did)
-    change pattern mask back to between-ss
-    change temporal factor to within-ss
-    add delay among practice screen presentations
-    (fade in text?)
-    explicitly record conditions of present block
-    add tutorial for use of the interface
+x   change pattern mask back to between-ss
+x   change temporal factor to within-ss
+x   add delay among practice screen presentations (unneeded - this was already there)
+x   explicitly record conditions of present block
+x   make disabling buttons work right
+x   add tutorial for use of the interface
+    fix issue where sliders re-enable after redraw following mask presentation
+    record temporal in test too
+    clear database
     create weekend sessions
+    
+    
+    Notes: run on Chrome; explaining sliders; explaining mask
