@@ -156,8 +156,8 @@
                     setTimeout( function() {
                         $('#feedback_text').html( fdbk );
                         $('#feedback').css( 'background-color', color );
-                        if ( adjust )   { presenter.setVals( trial.question.key[0], trial.question.key[1] ); }
                         if ( disable )  { presenter.disableSliders(); }
+                        if ( adjust )   { presenter.setVals( trial.question.key[0], trial.question.key[1] ); }
                         if ( ready )    { $('#submit_button').html( "Continue" ); }
                         setTimeout( function() {
                             $('#submit_button').prop( 'disabled', false ); }, delay );

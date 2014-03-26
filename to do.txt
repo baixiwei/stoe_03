@@ -13,10 +13,11 @@ x   add delay among practice screen presentations (unneeded - this was already t
 x   explicitly record conditions of present block
 x   make disabling buttons work right
 x   add tutorial for use of the interface
+x   record temporal in test too
     fix issue where sliders re-enable after redraw following mask presentation
-    record temporal in test too
     clear database
     create weekend sessions
+    respond on github
     
     
     Notes: run on Chrome; explaining sliders; explaining mask

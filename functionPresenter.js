@@ -32,6 +32,7 @@ function functionPresenter( functionType, spatialOrg, temporalOrg, mask, onClick
     this.displayMask    = displayMask;
     this.setVals        = setVals;
     this.getVals        = getVals;
+    this.slidersDisabled = slidersDisabled;
     this.disableSliders = disableSliders;
     this.enableSliders  = enableSliders;
     this.onClick        = (onClick!=undefined) ? onClick : function() {console.log("functionPresenter onClick not defined");};
@@ -183,12 +184,15 @@ function drawSelf( location, heightPx, widthPx ) {
         self.onClick();
         if ( self.mask ) {
             self.displayMask();
-            delay = 750;
+            if ( !self.slidersDisabled() ) {
+                self.disableSliders();
+                setTimeout( function () { self.updateImage(); self.enableSliders(); }, 750 );
+            } else {
+                setTimeout( function () { self.updateImage(); }, 750 );
+            }
         } else {
-            delay = 0;
+            self.updateImage();
         }
-        self.disableSliders();
-        setTimeout( function () { self.updateImage(); self.enableSliders(); }, delay );
         } );
     // format the elements
     self.colSliderVal.css( { "vertical-align": "middle", "text-align": "center", "color": "white" } );
@@ -261,6 +265,10 @@ function getVals() {
     var rowIdx  = this.rowSlider.slider( "value" );
     var colIdx  = this.colSlider.slider( "value" );
     return [ rowVals[rowIdx], colVals[colIdx] ];
+}
+
+function slidersDisabled() {
+    return( this.rowSlider.slider( "option", "disabled" ) && this.colSlider.slider( "option", "disabled" ) );
 }
 
 function disableSliders() {
