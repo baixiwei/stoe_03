@@ -14,9 +14,9 @@ x   explicitly record conditions of present block
 x   make disabling buttons work right
 x   add tutorial for use of the interface
 x   record temporal in test too
-    fix issue where sliders re-enable after redraw following mask presentation
-    clear database
-    create weekend sessions
+x   fix issue where sliders re-enable after redraw following mask presentation
+x   clear database
+x   create weekend sessions
     respond on github
     
     
