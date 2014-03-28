@@ -220,8 +220,8 @@ function makeExpStruct( spatial, temporal_first, mask, testing, mode, topics, bl
             }
             block = getPracticeBlock( topics[i], spatial, temporal, mask, mode );
             if ( testing ) {
-                block.questions = block.questions.slice(0,7);
-                block.data = block.data.slice(0,7);
+                block.questions = block.questions.slice(0,10);
+                block.data = block.data.slice(0,10);
             }
             exp_struct.push( block );
         }
@@ -254,6 +254,8 @@ function runExperiment( condition ) {
     console.log( "runExperiment Factors assigned. spatial: " + spatial + "; temporal_first: " + temporal_first + "; mask: " + mask );
     var topics      = [ "Binomial", "Power Law" ];
     var blocks      = [ "Introduction", "Tutorial", "Practice", "Test", "Background" ];
+    blocks = [ "Practice" ];
+    mask = true;
     var exp_struct  = makeExpStruct( spatial, temporal_first, mask, testing, mode, topics, blocks );
     
     // record start time
